@@ -1,18 +1,46 @@
 /**
  * UI
  * @author Airing
+ * 
  */
+
+function Stack(){
+    this.top=0;
+    this.dataStore=[];
+    this.push=function push(element){
+        this.dataStore[this.top++]=element;
+    };
+    this.pop=function pop(){
+        return this.dataStore[--this.top];
+    };
+    this.peek=function peek(){
+        return this.dataStore[this.top-1];
+    };
+    this.length=function length(){
+        return this.top;
+    };
+    this.clear=function clear(){
+        this.dataStore.length=0;
+        this.top=0;
+    };
+}
 
 var canvas = document.getElementById("chess");
 var context = canvas.getContext("2d");
-var me = true;              // 判断该轮黑白棋落子权
+var me = true;              // true为玩家落子权，false为电脑
 var over = false;           // 判断游戏是否结束
 var chessBoard = [];        // 棋盘二维数组,存储棋盘信息
+var steps = new Stack();    // 步数数组，存储步数信息
+
 
 /**
  * 开始按钮逻辑:初始化棋盘,并让电脑黑棋先行(7,7)位置
+ * 
+ * 电脑开局位置不变，可改动
  */
 function startGame() {
+    
+    board.init(15)
     
     // 初始化棋盘信息
     for (var i = 0; i < 15; i++) {
@@ -41,6 +69,9 @@ function startGame() {
     // 让电脑先行，(7,7)处绘制黑棋，并存储信息
     oneStep(7, 7, false);
     chessBoard[7][7] = 2;
+    steps.push((7,7,false));
+    var p = [7,7];
+    board.put(p,R.com);
 }
 
 /**
@@ -93,14 +124,23 @@ function oneStep(i, j ,me) {
 }
 
 
+
+
 /**
  * canvas 鼠标点击事件
  * @param e
+ * 
+ * 鼠标点击落子，改变对应赢法，电脑行棋
+ * chess board[i][j] = 1 //玩家落子
+ * chess board[i][j] = 2 //电脑落子
+ * 需改动
  */
 canvas.onclick = function(e) {
     if (over) {
         return;
     }
+    if(!me)
+        return;
 
     var x = e.offsetX;
     var y = e.offsetY;
@@ -110,9 +150,12 @@ canvas.onclick = function(e) {
     // 如果该位置没有棋子,则允许落子
     if(chessBoard[i][j] == 0) {
         // 绘制棋子(玩家)
-        oneStep(i, j, me);
+        oneStep(i, j, true);
         // 改变棋盘信息(该位置有棋子)
         chessBoard[i][j] = 1;
+        steps.push(i,j,true);
+        var p = [i,j];
+        board.put(p,R.hum);
 
         // 遍历赢法统计数组
         for (var k = 0; k < count; k ++) {
@@ -129,14 +172,13 @@ canvas.onclick = function(e) {
                 }
             }
 
-        }
-        //airingGo2()
+        }//end of for
 
         // 如果游戏没有结束,轮到电脑行棋
         if (!over) {
             me = !me;
             airingGo();
         }
-    }
-};
+    }//end of if
+};//end of function
 
