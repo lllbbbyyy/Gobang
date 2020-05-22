@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="css/style.css" rel="stylesheet">
-    <title>AiringGo</title>
+    <title>五子棋</title>
 </head>
 <body>
     <header>
@@ -11,7 +11,11 @@
             <div class="github-widget" data-repo="airingursb/AiringGo"></div>
         </h1> -->
 
-        <div id="newgamebutton" onclick="startGame()" >AiringGo!</div>
+        <div id="newgamebutton" onclick="meFirst(false)" name="meFirst" style="display:inline-block">电脑先行</div>
+        <div id="newgamebutton" onclick="meFirst(true)" name="computerFirst" style="display:inline-block">玩家先行</div>
+        <div id="newgamebutton" onclick="cleanChess()" name="restart" style="display:none">重新开始</div>
+        <div id="newgamebutton" onclick="goBack()" name="goBack" style="display:none">悔棋</div>
+        
     </header>
     <canvas id="chess" width="450px" height="450px"></canvas>
 
@@ -24,5 +28,5 @@
 <script src="js/jquery-2.1.4.min.js"></script>
 <script src="js/jquery.githubRepoWidget.min.js"></script>
 <script src="js/main.js"></script>
-<script src="js/AiringGo.js"></script>
+<script src="js/calculate.js"></script>
 </html>
