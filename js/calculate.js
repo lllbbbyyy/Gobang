@@ -1184,9 +1184,9 @@ var maxmin = function () {
 
   //选出当前局面的参考结点
   var candidates = board.gen(role)
-  //先固定搜索四层
+  //先固定搜索六层
 
-  bestScore = negamax(candidates, role, 4, MIN, MAX)
+  bestScore = negamax(candidates, role, 7, MIN, MAX)
   // 美化一下
   candidates = candidates.map(function (d) {
     var r = [d[0], d[1]]
